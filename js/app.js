@@ -35,7 +35,13 @@ const nationalities = [
 // Function to set min date and initial value for date inputs
 function setupDateInputs(inputs) {
   const today = new Date();
-  const formattedDate = today.toISOString().split("T")[0];
+
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day}`;
+
   inputs.forEach((input) => {
     input.min = formattedDate;
     input.value = formattedDate;
@@ -160,6 +166,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   nightsInput.addEventListener("input", function () {
     if (nightsInput.value <= 0) nightsInput.value = 0;
+
+    if (nightsInput.value.startsWith("0") && nightsInput.value.length > 1)
+      nightsInput.value = nightsInput.value.slice(1);
+
     checkoutInput.value = calculateCheckoutDate(
       checkinInput.value,
       nightsInput.value,
